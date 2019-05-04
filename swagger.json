@@ -1,0 +1,126 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "LTWLF - Perspective Image Transformation Function",
+    "description": "",
+    "version": "1.0"
+  },
+  "host": "",
+  "basePath": "/api",
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/transform": {
+      "post": {
+        "description": "Perspective transform an image",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Rectangle points and the image as Base64 string",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "image"
+              ],
+              "properties": {
+                "image": {
+                  "type": "string",
+                  "format": "byte"
+                },
+                "points": {
+                  "type": "object",
+                  "properties":{
+                    "p1":{
+                      "type":"object",
+                      "properties": {
+                        "x":{
+                          "type":"number"
+                        },
+                        "y":{
+                          "type":"number"
+                        }
+                      }
+                    },
+                    "p2":{
+                      "type":"object",
+                      "properties": {
+                        "x":{
+                          "type":"number"
+                        },
+                        "y":{
+                          "type":"number"
+                        }
+                      }
+                    },
+                    "p3":{
+                      "type":"object",
+                      "properties": {
+                        "x":{
+                          "type":"number"
+                        },
+                        "y":{
+                          "type":"number"
+                        }
+                      }
+                    },
+                    "p4":{
+                      "type":"object",
+                      "properties": {
+                        "x":{
+                          "type":"number"
+                        },
+                        "y":{
+                          "type":"number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "JPEG encoded transformed image as Base64 string",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "image":{
+                  "type":"string",
+                  "format": "byte"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error":{
+                  "type":"string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {},
+  "parameters": {},
+  "responses": {},
+  "securityDefinitions": {},
+  "security": [],
+  "tags": []
+}
