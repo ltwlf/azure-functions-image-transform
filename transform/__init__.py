@@ -5,30 +5,41 @@ import numpy as np
 import cv2
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
-    logging.info('Python HTTP trigger function processed a request.')
 
+    logging.info('Python Transform Image HTTP trigger function is processing a request.')
+
+    # parse json body
     req_body = req.get_json()
     req_image = req_body.get('image')
     req_points = req_body.get('points')
 
+    # read image from base64 string
     s_image = readb64(req_image)
 
+    # read the corner points
     s_pts = np.array([
         [req_points['p1']['x'], req_points['p1']['y']],
         [req_points['p2']['x'], req_points['p2']['y']],
         [req_points['p3']['x'], req_points['p3']['y']],
         [req_points['p4']['x'], req_points['p4']['y']]], np.int32)
 
+    # sort the points clockwise
     s_pts = order_points(s_pts)
     t_pts, maxWidth, maxHeight = get_target_points(s_pts)
 
+    # calculate transform
     M = cv2.getPerspectiveTransform(s_pts,t_pts)
 
-    t_image = cv2.warpPerspective(s_image,M,(maxWidth, maxHeight))
+    # transform
+    t_image = cv2.warpPerspective(s_image, M, (maxWidth, maxHeight))
 
+    # encode image as JPG
     _, img_encoded = cv2.imencode('.jpg', t_image)
+
+    # convert image to base64 string
     t_image_b64 = base64.b64encode(img_encoded).decode('utf-8')
 
+    # send response
     return func.HttpResponse(f"{{\"image\":\"{t_image_b64}\"}}", status_code=200, mimetype="application/json")
 
 
