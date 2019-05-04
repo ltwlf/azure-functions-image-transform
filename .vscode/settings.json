@@ -1,0 +1,9 @@
+{
+    "azureFunctions.deploySubpath": "azure-functions-perspective-image-correction.zip",
+    "azureFunctions.pythonVenv": "env",
+    "azureFunctions.projectLanguage": "Python",
+    "azureFunctions.projectRuntime": "~2",
+    "debug.internalConsoleOptions": "neverOpen",
+    "azureFunctions.preDeployTask": "func: pack",
+    "python.pythonPath": "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\Python36_64\\python.exe"
+}
