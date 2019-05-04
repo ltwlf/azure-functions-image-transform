@@ -27,7 +27,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     t_image = cv2.warpPerspective(s_image,M,(maxWidth, maxHeight))
 
     _, img_encoded = cv2.imencode('.jpg', t_image)
-    t_image_b64 = base64.b64encode(img_encoded)
+    t_image_b64 = base64.b64encode(img_encoded).decode('utf-8')
 
     return func.HttpResponse(f"{{\"image\":\"{t_image_b64}\"}}", status_code=200, mimetype="application/json")
 
@@ -66,18 +66,18 @@ def get_target_points(pts):
     (tl, tr, br, bl) = pts
 
     # compute the width of the new image, which will be the
-    # maximum distance between bottom-right and bottom-left
+    # minimum distance between bottom-right and bottom-left
     # x-coordiates or the top-right and top-left x-coordinates
     widthA = np.sqrt(((br[0] - bl[0]) ** 2) + ((br[1] - bl[1]) ** 2))
     widthB = np.sqrt(((tr[0] - tl[0]) ** 2) + ((tr[1] - tl[1]) ** 2))
-    maxWidth = max(int(widthA), int(widthB))
+    maxWidth = min(int(widthA), int(widthB))
 
     # compute the height of the new image, which will be the
-    # maximum distance between the top-right and bottom-right
+    # minimum distance between the top-right and bottom-right
     # y-coordinates or the top-left and bottom-left y-coordinates
     heightA = np.sqrt(((tr[0] - br[0]) ** 2) + ((tr[1] - br[1]) ** 2))
     heightB = np.sqrt(((tl[0] - bl[0]) ** 2) + ((tl[1] - bl[1]) ** 2))
-    maxHeight = max(int(heightA), int(heightB))  
+    maxHeight = min(int(heightA), int(heightB))  
 
     # now that we have the dimensions of the new image, construct
     # the set of destination points to obtain a "birds eye view",
